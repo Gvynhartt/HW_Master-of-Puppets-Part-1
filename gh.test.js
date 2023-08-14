@@ -37,37 +37,39 @@ describe("Github page tests", () => { // блок describe, для которо�
   }, 10000);
 });
 
+beforeEach(async () => { // глобальный хук для открытия страницы
+  page = await browser.newPage();
+});
+
+afterEach(() => { // глобальный хук для закрытия страницы
+  page.close();
+});
+
 test("GitHub Co-pilot page - h1 header content", async () => { // первый тест вне describe
   
-  page = await browser.newPage();
+  // повторявшиеся строки вынесены в хуки
   await page.goto("https://github.com/features/copilot");
   await page.waitForSelector("div[data-hpc] h1");
   const firstHeader = await page.$eval("div[data-hpc] h1", headerText => headerText.textContent);
   expect(firstHeader).toEqual("Your AI pair programmer");
-
-  await page.close();
 })
 
 test("GitHub Login page - h1 header content", async () => { // второй тест вне describe
   
-  page = await browser.newPage();
+  // повторявшиеся строки вынесены в хуки
   await page.goto("https://github.com/login");
   await page.waitForSelector("div.auth-form-header h1");
   const firstHeader = await page.$eval("div.auth-form-header h1", headerText => headerText.textContent);
   expect(firstHeader).toEqual("Sign in to GitHub");
-
-  await page.close();
 })
 
 test("GitHub Pricing page - h1 header content", async () => { // третий тест вне describe
   
-  page = await browser.newPage();
+  // повторявшиеся строки вынесены в хуки
   await page.goto("https://github.com/pricing");
   await page.waitForSelector("div h1.h2-mktg");
   const firstHeader = await page.$eval("div h1.h2-mktg", headerText => headerText.textContent);
   expect(firstHeader).toEqual("Get the complete developer" + String.fromCharCode(160) + "platform.");
-  // это не самый умный способ сделать сравнение с неразрывным пробелом, но мне и без того проблем хватает
-  await page.close();
 })
 
   
